@@ -30,6 +30,10 @@ jobs:
         working-directory: backend
         run: npm install
 
+      - name: Ejecutar pruebas automaticas
+        working-directory: backend
+        run: npm test
+
       - name: Revisar sintaxis del backend
         run: node --check backend/server.js
 
