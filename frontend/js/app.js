@@ -4,7 +4,17 @@ document.addEventListener("DOMContentLoaded", () => {
     const errorMessage = document.getElementById("error-message");
     const modelsGrid = document.getElementById("models-grid");
 
-    const API_URL = "http://localhost:3000/api";
+    const API_URL = window.location.port === "3000" ? "/api" : "http://localhost:3000/api";
+
+    async function readApiResponse(response) {
+        const responseBody = await response.text();
+
+        try {
+            return JSON.parse(responseBody);
+        } catch {
+            throw new Error(`El servidor respondió de forma inesperada (HTTP ${response.status}). Abre el sitio desde http://localhost:3000.`);
+        }
+    }
 
     const motorcycles = {
         TVS: [
@@ -118,7 +128,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     body: JSON.stringify({ email, password })
                 });
 
-                const data = await response.json();
+                const data = await readApiResponse(response);
 
                 if (!response.ok) {
                     throw new Error(data.error || "Credenciales inválidas");
@@ -127,7 +137,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 alert("¡Inicio de sesión exitoso!");
                 window.location.href = "dashboard.html";
             } catch (error) {
-                showError(error.message);
+                showError(error instanceof TypeError
+                    ? "No se pudo conectar con el servidor. Inícialo desde la carpeta backend y abre http://localhost:3000."
+                    : error.message);
             }
         });
     }
@@ -157,16 +169,17 @@ document.addEventListener("DOMContentLoaded", () => {
                     body: JSON.stringify({ name, email, password })
                 });
 
-                const data = await response.json();
+                const data = await readApiResponse(response);
 
                 if (!response.ok) {
                     throw new Error(data.error || "Error en el registro");
                 }
 
-                alert("¡Registro exitoso! Redirigiendo al login...");
-                window.location.href = "index.html";
+                window.location.href = "dashboard.html";
             } catch (error) {
-                showError(error.message);
+                showError(error instanceof TypeError
+                    ? "No se pudo conectar con el servidor. Inícialo desde la carpeta backend y abre http://localhost:3000."
+                    : error.message);
             }
         });
     }

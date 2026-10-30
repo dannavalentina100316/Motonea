@@ -8,6 +8,8 @@ const User = require('./models/User');
 const app = express();
 const PORT = 3000;
 const localUsersFile = path.join(__dirname, 'data', 'users.json');
+const frontendDirectory = path.join(__dirname, '..', 'frontend');
+let useMongoStorage = false;
 
 const normalizeEmail = (email) => email.trim().toLowerCase();
 
@@ -28,28 +30,15 @@ async function writeLocalUsers(users) {
     await fs.writeFile(localUsersFile, JSON.stringify(users, null, 2));
 }
 
-function isMongoReady() {
-    return mongoose.connection.readyState === 1;
-}
-
 // Middlewares
 app.use(express.json());
 app.use(cors());
 
-// Conexión a MongoDB Local
-mongoose.connect('mongodb://127.0.0.1:27017/motorapp_db')
-    .then(() => {
-        console.log('✅ Conectado exitosamente a MongoDB');
-    })
-    .catch(() => console.log('⚠️ MongoDB no disponible; usando almacenamiento local'));
+// Conexión directa heredada de MongoDB Atlas para omitir bloqueos DNS/ISP
+const MONGODB_URI = 'mongodb://adminmotor:danna1426682@ac-azchuq4-shard-00-00.cvfcd3w.mongodb.net:27017,ac-azchuq4-shard-00-01.cvfcd3w.mongodb.net:27017,ac-azchuq4-shard-00-02.cvfcd3w.mongodb.net:27017/motorapp_db?ssl=true&replicaSet=atlas-xydy6c-shard-0&authSource=admin&retryWrites=true&w=majority';
 
-app.listen(PORT, () => {
-    console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
-});
-
-// Ruta de Prueba
-app.get('/', (req, res) => {
-    res.send('API de Taller de Motos Funcionando 🏍️');
+app.get('/api/health', (req, res) => {
+    res.json({ status: 'ok' });
 });
 
 // Ruta de Registro
@@ -63,7 +52,12 @@ app.post('/api/register', async (req, res) => {
             return res.status(400).json({ error: 'Todos los campos son obligatorios' });
         }
 
-        if (isMongoReady()) {
+        const localUsers = await readLocalUsers();
+        if (localUsers.some((user) => user.email === email)) {
+            return res.status(409).json({ error: 'El correo ya está registrado' });
+        }
+
+        if (useMongoStorage) {
             const existingUser = await User.findOne({ email });
             if (existingUser) {
                 return res.status(409).json({ error: 'El correo ya está registrado' });
@@ -71,13 +65,8 @@ app.post('/api/register', async (req, res) => {
 
             await new User({ name, email, password }).save();
         } else {
-            const users = await readLocalUsers();
-            if (users.some((user) => user.email === email)) {
-                return res.status(409).json({ error: 'El correo ya está registrado' });
-            }
-
-            users.push({ name, email, password, createdAt: new Date().toISOString() });
-            await writeLocalUsers(users);
+            localUsers.push({ name, email, password, createdAt: new Date().toISOString() });
+            await writeLocalUsers(localUsers);
         }
 
         res.status(201).json({ message: 'Usuario registrado con éxito', user: { name, email } });
@@ -95,9 +84,9 @@ app.post('/api/login', async (req, res) => {
         const { password } = req.body;
         const email = typeof req.body.email === 'string' ? normalizeEmail(req.body.email) : '';
 
-        const user = isMongoReady()
-            ? await User.findOne({ email })
-            : (await readLocalUsers()).find((localUser) => localUser.email === email);
+        const mongoUser = useMongoStorage ? await User.findOne({ email }) : null;
+        const user = mongoUser || (await readLocalUsers()).find((localUser) => localUser.email === email);
+        
         if (!user || user.password !== password) {
             return res.status(400).json({ error: 'Credenciales inválidas' });
         }
@@ -107,3 +96,24 @@ app.post('/api/login', async (req, res) => {
         res.status(500).json({ error: 'Error en el servidor' });
     }
 });
+
+app.use(express.static(frontendDirectory));
+
+async function startServer() {
+    try {
+        await mongoose.connect(MONGODB_URI, {
+            serverSelectionTimeoutMS: 5000,
+            family: 4
+        });
+        useMongoStorage = true;
+        console.log('✅ Conectado exitosamente a MongoDB Atlas');
+    } catch (error) {
+        console.log('⚠️ Error al conectar con Atlas, usando almacenamiento local:', error.message);
+    }
+
+    app.listen(PORT, () => {
+        console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
+    });
+}
+
+startServer();
