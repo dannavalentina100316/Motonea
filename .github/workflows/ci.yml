@@ -1,0 +1,37 @@
+name: Validacion del proyecto
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+      - frontend
+      - backend
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  validar:
+    name: Validar codigo
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Descargar codigo
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Instalar dependencias del backend
+        working-directory: backend
+        run: npm install
+
+      - name: Revisar sintaxis del backend
+        run: node --check backend/server.js
+
+      - name: Revisar sintaxis del frontend
+        run: node --check frontend/js/app.js
