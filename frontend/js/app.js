@@ -324,6 +324,17 @@ document.addEventListener("DOMContentLoaded", () => {
                 engine: "399 cc Bicilíndrico", power: "45 HP @ 10000 rpm", torque: "38 Nm @ 8000 rpm", brakes: "Disco lobulado ABS",
                 details: "Dominadora de la categoría supersport ligera con aceleración contundente y maniobrabilidad precisa."
             },
+            {
+                name: "Ninja 650",
+                type: "Deportiva",
+                price: "Consultar precio",
+                image: "https://images.unsplash.com/photo-1606907568152-58fcb0a0a4e5?auto=format&fit=crop&w=900&q=80",
+                engine: "649 cc Bicilíndrico",
+                power: "Consultar ficha",
+                torque: "Consultar ficha",
+                brakes: "Consultar ficha",
+                details: "Motocicleta deportiva de media cilindrada. Imagen ilustrativa; consulta la ficha técnica y disponibilidad de la versión."
+            },
             { 
                 name: "Z400", 
                 type: "Naked", 
