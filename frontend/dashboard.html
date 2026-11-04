@@ -28,6 +28,8 @@
             <div class="header-actions">
                 <button class="secondary-pill">Campañas de seguridad</button>
                 <button class="primary-pill">Vehículos eléctricos</button>
+                <!-- Botón de Salir -->
+                <button id="btn-logout" class="secondary-pill" style="background-color: #dc2626; color: white; border: none; cursor: pointer;">Salir</button>
             </div>
         </header>
 
@@ -43,8 +45,7 @@
                 <div class="hero-copy-right">
                     <p>DEJA DE SEGUIR</p>
                     <h3>TENDENCIAS,</h3>
-                    <h4>CONVIÉRTETE EN UNA.</h4>
-                    <span>ESTILO SUPERMOTO</span>
+                   
                     <button>CONSÚLTALA</button>
                 </div>
             </section>
@@ -128,9 +129,8 @@
 
             <section class="cta-panel">
                 <h3>Solicita el crédito para tu moto</h3>
-                <p>Conoce la cuota mensual aproximada que podrías pagar con tu crédito y las diferentes opciones de
-                    financiación.</p>
-                <button>VER MÁS</button>
+                <p>Conoce la cuota mensual aproximada que podrías pagar con tu crédito y las diferentes opciones de financiación.</p>
+                <button id="btn-ver-credito">VER MÁS</button>
             </section>
 
             <section class="electric-grid">
@@ -179,11 +179,11 @@
             <section class="help-strip">
                 <h3>¿Necesitas asesoría?</h3>
                 <div class="help-row">
-                    <button>Solicita tu cotización</button>
-                    <button>Reserva tu Test Drive</button>
-                    <button>Solicita tu crédito</button>
-                    <button>Servicio técnico</button>
-                    <button>Puntos de atención</button>
+                    <button class="btn-asesoria" data-tipo="cotizacion">Solicita tu cotización</button>
+                    <button class="btn-asesoria" data-tipo="testdrive">Reserva tu Test Drive</button>
+                    <button class="btn-asesoria" data-tipo="credito">Solicita tu crédito</button>
+                    <button class="btn-asesoria" data-tipo="tecnico">Servicio técnico</button>
+                    <button class="btn-asesoria" data-tipo="puntos">Puntos de atención</button>
                 </div>
             </section>
 
