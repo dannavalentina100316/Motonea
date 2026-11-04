@@ -26,8 +26,8 @@
             </nav>
 
             <div class="header-actions">
-                <button class="secondary-pill">Campañas de seguridad</button>
-                <button class="primary-pill">Vehículos eléctricos</button>
+                <button id="btn-campanas-seguridad" class="secondary-pill" type="button">Campañas de seguridad</button>
+                <button id="btn-vehiculos-electricos" class="primary-pill" type="button">Vehículos eléctricos</button>
                 <!-- Botón de Salir -->
                 <button id="btn-logout" class="secondary-pill" style="background-color: #dc2626; color: white; border: none; cursor: pointer;">Salir</button>
             </div>
@@ -45,7 +45,6 @@
                 <div class="hero-copy-right">
                     <p>DEJA DE SEGUIR</p>
                     <h3>TENDENCIAS,</h3>
-                   
                     <button>CONSÚLTALA</button>
                 </div>
             </section>
@@ -88,7 +87,10 @@
                         <h3 id="models-title">Motos TVS</h3>
                         <p id="models-description">Modelos destacados disponibles para conocer y reservar.</p>
                     </div>
-                    <button class="view-all-btn" type="button">Ver catálogo completo</button>
+                    <div class="catalog-actions">
+                        <button id="btn-catalogo-completo" class="view-all-btn" type="button">Ver catálogo completo</button>
+                        <button id="btn-catalogo-inicio" class="view-all-btn catalog-back-btn" type="button" hidden>Volver al inicio</button>
+                    </div>
                 </div>
 
                 <div class="models-grid" id="models-grid"></div>
@@ -98,32 +100,40 @@
                 <h3>Conoce nuestros tipos de motos</h3>
 
                 <div class="category-row">
-                    <div class="category-item category-item--auto">
-                        <div class="category-image image-auto"></div>
+                    <a class="category-item category-item--auto" href="#modelos" id="btn-ver-automaticas" aria-label="Ver catálogo de motos automáticas">
+                        <img class="category-image" src="https://tse1.mm.bing.net/th/id/OIP.pAx3tcdVyotauqJGY-hBfQHaE8?r=0&rs=1&pid=ImgDetMain&o=7&rm=3" alt="Scooter automática Kymco Agility 125" loading="lazy">
                         <span>Automáticas</span>
-                    </div>
+                        <small>Kymco Agility 125</small>
+                        <span class="category-cta">Ver catálogo</span>
+                    </a>
 
-                    <div class="category-item category-item--semi">
-                        <div class="category-image image-semi"></div>
+                    <a class="category-item category-item--semi" href="#modelos" id="btn-ver-semi" aria-label="Ver catálogo de motos semiautomáticas">
+                        <img class="category-image" src="https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=900&q=80" alt="Motocicleta semiautomática de referencia" loading="lazy">
                         <span>Semi automáticas</span>
-                    </div>
+                        <small>Referencias urbanas</small>
+                        <span class="category-cta">Ver catálogo</span>
+                    </a>
 
-                    <div class="category-item category-item--featured">
-                        <div class="category-image image-terrain"></div>
+                    <a class="category-item category-item--featured" href="#modelos" id="btn-ver-terreno" aria-label="Ver catálogo de motos todo terreno">
+                        <img class="category-image" src="https://tse2.mm.bing.net/th/id/OIP.YTpXHA0h2agumjdtcYr3QgHaGR?r=0&rs=1&pid=ImgDetMain&o=7&rm=3" alt="Motocicleta de aventura Benelli TRK 502" loading="lazy">
                         <span>Todo Terreno</span>
-                        <small>Muévete sin límites</small>
-                        <a href="#">Ver más</a>
-                    </div>
+                        <small>Benelli TRK 502</small>
+                        <span class="category-cta">Ver catálogo</span>
+                    </a>
 
-                    <div class="category-item category-item--sport">
-                        <div class="category-image image-sport"></div>
+                    <a class="category-item category-item--sport" href="#modelos" id="btn-ver-deportivas" aria-label="Ver catálogo de motos deportivas">
+                        <img class="category-image" src="https://tse4.mm.bing.net/th/id/OIP.mF9N-R9QnLyE1FVG0POB1AHaFJ?r=0&rs=1&pid=ImgDetMain&o=7&rm=3" alt="Moto deportiva Kawasaki Ninja 400" loading="lazy">
                         <span>Deportivas</span>
-                    </div>
+                        <small>Kawasaki Ninja 400</small>
+                        <span class="category-cta">Ver catálogo</span>
+                    </a>
 
-                    <div class="category-item category-item--premium">
-                        <div class="category-image image-premium"></div>
+                    <a class="category-item category-item--premium" href="#modelos" id="btn-ver-altagama" aria-label="Ver catálogo de motos de alta gama">
+                        <img class="category-image" src="https://tse3.mm.bing.net/th/id/OIP.QxzINjeVfSPL4eFYpVVeOQHaFj?r=0&rs=1&pid=ImgDetMain&o=7&rm=3" alt="Moto touring Kawasaki Versys 650" loading="lazy">
                         <span>Alta gama</span>
-                    </div>
+                        <small>Kawasaki Versys 650</small>
+                        <span class="category-cta">Ver catálogo</span>
+                    </a>
                 </div>
             </section>
 
@@ -133,45 +143,88 @@
                 <button id="btn-ver-credito">VER MÁS</button>
             </section>
 
-            <section class="electric-grid">
-                <article class="electric-card electric-card--1">
-                    <div class="electric-overlay"></div>
-                    <h4>Motos Eléctricas</h4>
-                </article>
+            <section class="electric-section" id="vehiculos-electricos">
+                <div class="electric-heading">
+                    <span class="section-kicker">Movilidad sostenible</span>
+                    <h3>Muévete en eléctrico</h3>
+                    <p>Conoce las alternativas de movilidad eléctrica y consulta cuál se adapta mejor a tus recorridos.</p>
+                </div>
+                <div class="electric-grid">
+                    <article class="electric-card">
+                        <img class="electric-card-image" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/3/38/Harley_Davidson_LiveWire_right_noBG.jpg/960px-Harley_Davidson_LiveWire_right_noBG.jpg" alt="Motocicleta eléctrica Harley-Davidson LiveWire" loading="lazy">
+                        <div class="electric-overlay"></div>
+                        <div class="electric-card-content">
+                            <h4>Motos eléctricas</h4>
+                            <p>Una alternativa para tus trayectos diarios, con motor eléctrico y recarga desde una toma compatible.</p>
+                            <button class="btn-electric-info" type="button" data-tipo="motos-electricas">Conocer más</button>
+                            <a class="electric-image-credit" href="https://commons.wikimedia.org/wiki/File:Harley_Davidson_LiveWire_right_noBG.jpg" target="_blank" rel="noopener noreferrer">Foto y crédito · Wikimedia Commons</a>
+                        </div>
+                    </article>
 
-                <article class="electric-card electric-card--2">
-                    <div class="electric-overlay"></div>
-                    <h4>Bicicletas Eléctricas</h4>
-                </article>
+                    <article class="electric-card">
+                        <img class="electric-card-image" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/8/80/LACMTA_Bike_Share_electric_bicycle_-_drive_side.jpg/960px-LACMTA_Bike_Share_electric_bicycle_-_drive_side.jpg" alt="Bicicleta eléctrica de asistencia al pedaleo" loading="lazy">
+                        <div class="electric-overlay"></div>
+                        <div class="electric-card-content">
+                            <h4>Bicicletas eléctricas</h4>
+                            <p>Pedalea con asistencia eléctrica cuando la necesites para movilizarte por la ciudad.</p>
+                            <button class="btn-electric-info" type="button" data-tipo="bicicletas-electricas">Conocer más</button>
+                            <a class="electric-image-credit" href="https://commons.wikimedia.org/wiki/File:LACMTA_Bike_Share_electric_bicycle_-_drive_side.jpg" target="_blank" rel="noopener noreferrer">Foto y crédito · Wikimedia Commons</a>
+                        </div>
+                    </article>
 
-                <article class="electric-card electric-card--3">
-                    <div class="electric-overlay"></div>
-                    <h4>Patinetas Eléctricas</h4>
-                </article>
+                    <article class="electric-card">
+                        <img class="electric-card-image" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/5/53/Ex_scooter%2C_Frankfurt_am_Main_%28LRM_20210815_134347%29.jpg/960px-Ex_scooter%2C_Frankfurt_am_Main_%28LRM_20210815_134347%29.jpg" alt="Patineta eléctrica de pie" loading="lazy">
+                        <div class="electric-overlay"></div>
+                        <div class="electric-card-content">
+                            <h4>Patinetas eléctricas</h4>
+                            <p>Una opción compacta para recorridos cortos. Revisa las normas locales antes de circular.</p>
+                            <button class="btn-electric-info" type="button" data-tipo="patinetas-electricas">Conocer más</button>
+                            <a class="electric-image-credit" href="https://commons.wikimedia.org/wiki/File:Ex_scooter,_Frankfurt_am_Main_(LRM_20210815_134347).jpg" target="_blank" rel="noopener noreferrer">Foto y crédito · Wikimedia Commons</a>
+                        </div>
+                    </article>
+                </div>
             </section>
 
             <section class="accessories-area">
                 <h3>Encuentra tus repuestos o accesorios</h3>
                 <div class="accessory-row">
-                    <div class="accessory-item">
-                        <div class="accessory-image oil"></div>
-                        <span>Kit Arrastre</span>
+                    <div class="accessory-card">
+                        <button class="accessory-item" type="button" data-accessory="arrastre">
+                            <img class="accessory-image" src="https://tse2.mm.bing.net/th/id/OIP.2PfZY9dCbyeTZeAGPHpvDQHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3" alt="Kit de arrastre con cadena, piñón y corona" loading="lazy">
+                            <span>Kit de arrastre</span>
+                            <small>Ver referencias</small>
+                        </button>
                     </div>
-                    <div class="accessory-item">
-                        <div class="accessory-image chain"></div>
-                        <span>Partes freno</span>
+                    <div class="accessory-card">
+                        <button class="accessory-item" type="button" data-accessory="frenos">
+                            <img class="accessory-image" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9c/BMW_R1150GS_front_discs.jpg/500px-BMW_R1150GS_front_discs.jpg" alt="Discos de freno delanteros de motocicleta" loading="lazy">
+                            <span>Partes de freno</span>
+                            <small>Ver referencias</small>
+                        </button>
+                        <a class="image-credit" href="https://commons.wikimedia.org/wiki/File:BMW_R1150GS_front_discs.jpg" target="_blank" rel="noopener noreferrer">Crédito de imagen</a>
                     </div>
-                    <div class="accessory-item">
-                        <div class="accessory-image helmet"></div>
-                        <span>Cascos</span>
+                    <div class="accessory-card">
+                        <button class="accessory-item" type="button" data-accessory="cascos">
+                            <img class="accessory-image" src="https://tse3.mm.bing.net/th/id/OIP.t8FckNRUhHTV6Xnjl8-vnAHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3" alt="Cascos de protección para motociclista" loading="lazy">
+                            <span>Cascos</span>
+                            <small>Ver referencias</small>
+                        </button>
                     </div>
-                    <div class="accessory-item">
-                        <div class="accessory-image outfit"></div>
-                        <span>Accesorios</span>
+                    <div class="accessory-card">
+                        <button class="accessory-item" type="button" data-accessory="accesorios">
+                            <img class="accessory-image" src="https://tse4.mm.bing.net/th/id/OIP.5-b8yaaipShArY3OWXC-LwHaE8?r=0&rs=1&pid=ImgDetMain&o=7&rm=3y" alt="Chaqueta y guantes de protección para motociclista" loading="lazy">
+                            <span>Accesorios</span>
+                            <small>Ver referencias</small>
+                        </button>
+                        <a class="image-credit" href="https://commons.wikimedia.org/wiki/File:MotoEqipments_HelmetBootsJacketAndGloves.jpg" target="_blank" rel="noopener noreferrer">Crédito de imagen</a>
                     </div>
-                    <div class="accessory-item">
-                        <div class="accessory-image box"></div>
-                        <span>Maleteros</span>
+                    <div class="accessory-card">
+                        <button class="accessory-item" type="button" data-accessory="maleteros">
+                            <img class="accessory-image" src="https://upload.wikimedia.org/wikipedia/commons/8/83/Top-case.jpg" alt="Maletero trasero para motocicleta" loading="lazy">
+                            <span>Maleteros</span>
+                            <small>Ver referencias</small>
+                        </button>
+                        <a class="image-credit" href="https://commons.wikimedia.org/wiki/File:Top-case.jpg" target="_blank" rel="noopener noreferrer">Crédito de imagen</a>
                     </div>
                 </div>
             </section>

@@ -5,6 +5,17 @@ document.addEventListener("DOMContentLoaded", () => {
     const modelsGrid = document.getElementById("models-grid");
     const btnLogout = document.getElementById("btn-logout");
     const btnVerCredito = document.getElementById("btn-ver-credito");
+    const btnCatalogoCompleto = document.getElementById("btn-catalogo-completo");
+    const btnCatalogoInicio = document.getElementById("btn-catalogo-inicio");
+    const btnCampanasSeguridad = document.getElementById("btn-campanas-seguridad");
+    const btnVehiculosElectricos = document.getElementById("btn-vehiculos-electricos");
+
+    // Botones de categorías
+    const btnVerTerreno = document.getElementById("btn-ver-terreno");
+    const btnVerAutomaticas = document.getElementById("btn-ver-automaticas");
+    const btnVerSemi = document.getElementById("btn-ver-semi");
+    const btnVerDeportivas = document.getElementById("btn-ver-deportivas");
+    const btnVerAltagama = document.getElementById("btn-ver-altagama");
 
     const API_URL = window.location.port === "3000" ? "/api" : "http://localhost:3000/api";
 
@@ -107,23 +118,72 @@ document.addEventListener("DOMContentLoaded", () => {
             price: "Red de concesionarios Motonea",
             image: "https://tse3.mm.bing.net/th/id/OIP.ybg1GjfQ6-yJRl-zYJAGOwHaE7?r=0&rs=1&pid=ImgDetMain&o=7&rm=3",
             details: "Visita nuestra red de salas de venta y centros de servicio autorizados. Contamos con vitrinas modernas, asesores expertos y stock permanente de vehículos y accesorios."
+        },
+        seguridad: {
+            title: "Campañas de seguridad vial",
+            type: "Consejos para cada recorrido",
+            price: "Tu seguridad empieza antes de salir",
+            image: "https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=900&q=80",
+            details: "Usa siempre un casco certificado y bien ajustado, además de prendas visibles y protección adecuada. Antes de cada viaje revisa frenos, llantas, luces y espejos. Respeta las señales, mantén una distancia segura y evita conducir si estás cansado."
+        },
+        "motos-electricas": {
+            title: "Motos eléctricas",
+            type: "Movilidad eléctrica",
+            price: "Para tus recorridos diarios",
+            image: "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/38/Harley_Davidson_LiveWire_right_noBG.jpg/960px-Harley_Davidson_LiveWire_right_noBG.jpg",
+            details: "Las motos eléctricas utilizan un motor alimentado por batería y se recargan conectándolas a una fuente compatible. Antes de elegir, compara autonomía, tiempo de carga, garantía y disponibilidad de servicio para el modelo específico."
+        },
+        "bicicletas-electricas": {
+            title: "Bicicletas eléctricas",
+            type: "Movilidad eléctrica",
+            price: "Asistencia para pedalear",
+            image: "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/80/LACMTA_Bike_Share_electric_bicycle_-_drive_side.jpg/960px-LACMTA_Bike_Share_electric_bicycle_-_drive_side.jpg",
+            details: "La asistencia eléctrica complementa el pedaleo y puede hacer más cómodos los recorridos urbanos. Revisa autonomía, batería, modos de asistencia y las reglas locales aplicables a bicicletas eléctricas."
+        },
+        "patinetas-electricas": {
+            title: "Patinetas eléctricas",
+            type: "Movilidad eléctrica",
+            price: "Una opción compacta",
+            image: "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/53/Ex_scooter%2C_Frankfurt_am_Main_%28LRM_20210815_134347%29.jpg/960px-Ex_scooter%2C_Frankfurt_am_Main_%28LRM_20210815_134347%29.jpg",
+            details: "Las patinetas eléctricas están pensadas para desplazamientos cortos. Verifica autonomía, tiempo de carga, elementos de seguridad y las normas de circulación de tu ciudad antes de utilizarlas."
         }
     };
+
+    function showAdvisoryInfo(info) {
+        if (!info || !motoModal) return;
+
+        modalImage.style.backgroundImage = `url('${info.image}')`;
+        modalType.textContent = info.type;
+        modalTitle.textContent = info.title;
+        modalPrice.textContent = info.price;
+        modalSpecsContainer.style.display = "none";
+        modalDescription.textContent = info.details;
+        motoModal.style.display = "flex";
+    }
 
     document.querySelectorAll(".btn-asesoria").forEach(btn => {
         btn.addEventListener("click", (e) => {
             e.preventDefault();
             const tipo = btn.getAttribute("data-tipo");
-            const info = asesoriaInfo[tipo];
-            if (info) {
-                modalImage.style.backgroundImage = `url('${info.image}')`;
-                modalType.textContent = info.type;
-                modalTitle.textContent = info.title;
-                modalPrice.textContent = info.price;
-                modalSpecsContainer.style.display = "none";
-                modalDescription.textContent = info.details;
-                motoModal.style.display = "flex";
-            }
+            showAdvisoryInfo(asesoriaInfo[tipo]);
+        });
+    });
+
+    if (btnCampanasSeguridad) {
+        btnCampanasSeguridad.addEventListener("click", () => {
+            showAdvisoryInfo(asesoriaInfo.seguridad);
+        });
+    }
+
+    if (btnVehiculosElectricos) {
+        btnVehiculosElectricos.addEventListener("click", () => {
+            document.getElementById("vehiculos-electricos")?.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+    }
+
+    document.querySelectorAll(".btn-electric-info").forEach(button => {
+        button.addEventListener("click", () => {
+            showAdvisoryInfo(asesoriaInfo[button.dataset.tipo]);
         });
     });
 
@@ -131,16 +191,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (btnVerCredito) {
         btnVerCredito.addEventListener("click", (e) => {
             e.preventDefault();
-            const infoCredito = asesoriaInfo["credito"];
-            if (infoCredito && motoModal) {
-                modalImage.style.backgroundImage = `url('${infoCredito.image}')`;
-                modalType.textContent = infoCredito.type;
-                modalTitle.textContent = infoCredito.title;
-                modalPrice.textContent = infoCredito.price;
-                if (modalSpecsContainer) modalSpecsContainer.style.display = "none";
-                modalDescription.textContent = infoCredito.details;
-                motoModal.style.display = "flex";
-            }
+            showAdvisoryInfo(asesoriaInfo.credito);
         });
     }
 
@@ -195,7 +246,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 name: "Bomber 250", 
                 type: "Naked", 
                 price: "$15.490.000", 
-                image: "https://images.unsplash.com/photo-1558980664-10e7170b5df9?auto=format&fit=crop&w=900&q=80",
+                image: "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/78/Flickr_-_ronsaunders47_-_SUZUKI_GT250._250cc_TWO_STROKE_TWIN.UK.jpg/960px-Flickr_-_ronsaunders47_-_SUZUKI_GT250._250cc_TWO_STROKE_TWIN.UK.jpg",
+                imageCredit: "https://commons.wikimedia.org/wiki/File:Flickr_-_ronsaunders47_-_SUZUKI_GT250._250cc_TWO_STROKE_TWIN.UK.jpg",
                 engine: "249 cc", power: "22 HP @ 8500 rpm", torque: "21 Nm @ 7000 rpm", brakes: "Disco ABS",
                 details: "Estilo neo-retro con potencia destacada para rodadas urbanas y de carretera."
             },
@@ -203,7 +255,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 name: "One 125", 
                 type: "Urbana", 
                 price: "$8.990.000", 
-                image: "https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=900&q=80",
+                image: "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fd/Motorcycle_World%2C_Whalley%2C_Surrey_%288253755811%29.jpg/960px-Motorcycle_World%2C_Whalley%2C_Surrey_%288253755811%29.jpg",
+                imageCredit: "https://commons.wikimedia.org/wiki/File:Motorcycle_World,_Whalley,_Surrey_(8253755811).jpg",
                 engine: "125 cc", power: "10 HP @ 7500 rpm", torque: "9.5 Nm @ 6000 rpm", brakes: "Tambor combinado",
                 details: "Sencilla, resistente y económica, ideal para el trabajo diario en la ciudad."
             }
@@ -229,7 +282,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 name: "X-Town 300", 
                 type: "Maxi scooter", 
                 price: "$25.990.000", 
-                image: "https://images.unsplash.com/photo-1558980664-10e7170b5df9?auto=format&fit=crop&w=900&q=80",
+                image: "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/78/Kreta_%28GR%29%2C_Rethymno%2C_Motorroller_--_2023_--_8344_%28crop%29.jpg/960px-Kreta_%28GR%29%2C_Rethymno%2C_Motorroller_--_2023_--_8344_%28crop%29.jpg",
+                imageCredit: "https://commons.wikimedia.org/wiki/File:Kreta_(GR),_Rethymno,_Motorroller_--_2023_--_8344_(crop).jpg",
                 engine: "276 cc", power: "24.1 HP @ 7250 rpm", torque: "25 Nm @ 6250 rpm", brakes: "Disco ABS Doble",
                 details: "Máximo confort en viajes largos, gran espacio de almacenamiento bajo el asiento y gran estabilidad."
             }
@@ -255,7 +309,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 name: "Leoncino 500", 
                 type: "Scrambler", 
                 price: "$29.990.000", 
-                image: "https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=900&q=80",
+                image: "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/16/Triumph_21_%281962%29_-_7316813864.jpg/960px-Triumph_21_%281962%29_-_7316813864.jpg",
+                imageCredit: "https://commons.wikimedia.org/wiki/File:Triumph_21_(1962)_-_7316813864.jpg",
                 engine: "500 cc", power: "47.6 HP @ 8500 rpm", torque: "46 Nm @ 6000 rpm", brakes: "Disco ABS",
                 details: "Diseño auténtico de la herencia Benelli con toque moderno y sonido incomparable."
             }
@@ -273,7 +328,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 name: "Z400", 
                 type: "Naked", 
                 price: "$31.990.000", 
-                image: "https://th.bing.com/th/id/R.71550277a5c80eac2e008eaee7a3b43b?rik=nr7VDBBvRsghqw&pid=ImgRaw&r=0",
+                image: "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0c/US_Navy_050804-N-0879R-001_A_Sailor_rides_his_motorcycle_on_board_Naval_Station_Pearl_Harbor.jpg/500px-US_Navy_050804-N-0879R-001_A_Sailor_rides_his_motorcycle_on_board_Naval_Station_Pearl_Harbor.jpg",
+                imageCredit: "https://commons.wikimedia.org/wiki/File:US_Navy_050804-N-0879R-001_A_Sailor_rides_his_motorcycle_on_board_Naval_Station_Pearl_Harbor.jpg",
                 engine: "399 cc", power: "45 HP @ 10000 rpm", torque: "38 Nm @ 8000 rpm", brakes: "Disco ABS",
                 details: "Actitud agresiva Sugomi, chasis liviano y desempeño urbano y de pista de alto nivel."
             },
@@ -311,7 +367,161 @@ document.addEventListener("DOMContentLoaded", () => {
                 engine: "125 cc", power: "14.5 HP @ 9000 rpm", torque: "13 Nm @ 7000 rpm", brakes: "Disco ABS",
                 details: "Tecnología de gama alta adaptada a la movilidad urbana eficiente."
             }
+
+        ],
+        "Referencias Motonea": [
+            {
+                name: "Urbana 110",
+                type: "Semiautomática (referencia)",
+                price: "Consultar precio",
+                image: "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d9/2026_Honda_Wave_110_Special_Edition_%28Alloy_Type%29.jpg/960px-2026_Honda_Wave_110_Special_Edition_%28Alloy_Type%29.jpg",
+                imageCredit: "https://commons.wikimedia.org/wiki/File:2026_Honda_Wave_110_Special_Edition_(Alloy_Type).jpg",
+                engine: "Consultar ficha",
+                power: "Consultar ficha",
+                torque: "Consultar ficha",
+                brakes: "Consultar ficha",
+                details: "Imagen y nombre de referencia para mostrar la categoría. Confirma con un asesor el modelo comercial, sus especificaciones y disponibilidad."
+            },
+            {
+                name: "Urbana 125",
+                type: "Semiautomática (referencia)",
+                price: "Consultar precio",
+                image: "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/be/Honda_wave_110_in_kuala_lumpur.jpg/960px-Honda_wave_110_in_kuala_lumpur.jpg",
+                imageCredit: "https://commons.wikimedia.org/wiki/File:Honda_wave_110_in_kuala_lumpur.jpg",
+                engine: "Consultar ficha",
+                power: "Consultar ficha",
+                torque: "Consultar ficha",
+                brakes: "Consultar ficha",
+                details: "Imagen y nombre de referencia para mostrar la categoría. Confirma con un asesor el modelo comercial, sus especificaciones y disponibilidad."
+            },
+            {
+                name: "Urbana 150",
+                type: "Semiautomática (referencia)",
+                price: "Consultar precio",
+                image: "https://tse2.mm.bing.net/th/id/OIP.YaE740f7k0rctg2WV2x1wAHaEk?r=0&rs=1&pid=ImgDetMain&o=7&rm=3",
+                engine: "Consultar ficha",
+                power: "Consultar ficha",
+                torque: "Consultar ficha",
+                brakes: "Consultar ficha",
+                details: "Imagen y nombre de referencia para mostrar la categoría. Confirma con un asesor el modelo comercial, sus especificaciones y disponibilidad."
+            }
         ]
+    };
+
+    const accessoryCatalog = {
+        arrastre: {
+            title: "Catálogo de kits de arrastre",
+            description: "Referencias ilustrativas de cadenas y piñones. Confirma compatibilidad con marca, modelo y año de tu moto.",
+            products: [
+                {
+                    name: "Kit de arrastre urbano",
+                    reference: "KA-428H-01",
+                    image: "https://upload.wikimedia.org/wikipedia/commons/f/f6/Pignoni_50_cc.jpg",
+                    imageCredit: "https://commons.wikimedia.org/wiki/File:Pignoni_50_cc.jpg",
+                    details: "Referencia visual de piñón para transmisión. El paso y número de dientes deben confirmarse según la motocicleta."
+                },
+                {
+                    name: "Cadena y transmisión tipo Jawa",
+                    reference: "KA-520-02",
+                    image: "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/74/Flickr_-_ronsaunders47_-_SPEEDWAY_MOTORCYCLE._JAWA_ENGINE..jpg/960px-Flickr_-_ronsaunders47_-_SPEEDWAY_MOTORCYCLE._JAWA_ENGINE..jpg",
+                    imageCredit: "https://commons.wikimedia.org/wiki/File:Flickr_-_ronsaunders47_-_SPEEDWAY_MOTORCYCLE._JAWA_ENGINE..jpg",
+                    details: "Imagen de referencia del conjunto de transmisión. Consulta la referencia compatible antes de comprar."
+                }
+            ]
+        },
+        frenos: {
+            title: "Catálogo de partes de freno",
+            description: "Discos y componentes de freno de referencia. La compatibilidad depende de la motocicleta.",
+            products: [
+                {
+                    name: "Disco de freno delantero",
+                    reference: "FR-DIS-01",
+                    image: "https://upload.wikimedia.org/wikipedia/commons/8/88/Aisobrake1.jpg",
+                    imageCredit: "https://commons.wikimedia.org/wiki/File:Aisobrake1.jpg",
+                    details: "Componente de frenado mostrado como referencia. Verifica diámetro, anclajes y compatibilidad con tu moto."
+                },
+                {
+                    name: "Discos delanteros para motocicleta",
+                    reference: "FR-DIS-02",
+                    image: "https://tse3.mm.bing.net/th/id/OIP.o15LkQoKbEM1ELQ_qorHGgHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3",
+                    details: "Imagen de referencia de discos de freno. Consulta disponibilidad y aplicación para tu modelo."
+                }
+            ]
+        },
+        cascos: {
+            title: "Catálogo de cascos",
+            description: "Opciones de protección ilustrativas. Antes de comprar, verifica talla, ajuste y homologación vigente.",
+            products: [
+                {
+                    name: "Casco integral",
+                    reference: "CAS-IN-01",
+                    image: "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/90/Full-Face_Helmet_9274.jpg/500px-Full-Face_Helmet_9274.jpg",
+                    imageCredit: "https://commons.wikimedia.org/wiki/File:Full-Face_Helmet_9274.jpg",
+                    details: "Casco integral de referencia. El diseño no confirma certificación ni disponibilidad comercial."
+                },
+                {
+                    name: "Casco urbano",
+                    reference: "CAS-UR-02",
+                    image: "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5d/Couple_Riding_Motorcycle_in_Bike_lane_W_Lone_Mountain_Rd.jpg/500px-Couple_Riding_Motorcycle_in_Bike_lane_W_Lone_Mountain_Rd.jpg",
+                    imageCredit: "https://commons.wikimedia.org/wiki/File:Couple_Riding_Motorcycle_in_Bike_lane_W_Lone_Mountain_Rd.jpg",
+                    details: "Imagen de referencia de uso de casco en ciudad. Revisa el tipo de casco y su certificación antes de comprar."
+                }
+            ]
+        },
+        accesorios: {
+            title: "Catálogo de accesorios para motociclista",
+            description: "Elementos de protección y comodidad. Revisa materiales, tallas y especificaciones antes de elegir.",
+            products: [
+                {
+                    name: "Guantes de conducción",
+                    reference: "ACC-GUA-01",
+                    image: "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7f/Hyod_racing_gloves_%2826574882235%29.jpg/500px-Hyod_racing_gloves_%2826574882235%29.jpg",
+                    imageCredit: "https://commons.wikimedia.org/wiki/File:Hyod_racing_gloves_(26574882235).jpg",
+                    details: "Guantes de referencia para conducción. La imagen no representa una oferta o marca disponible en Motonea."
+                },
+                {
+                    name: "Guantes con protección",
+                    reference: "ACC-GUA-02",
+                    image: "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a8/Metal_Motorcycle_Gloves.jpg/500px-Metal_Motorcycle_Gloves.jpg",
+                    imageCredit: "https://commons.wikimedia.org/wiki/File:Metal_Motorcycle_Gloves.jpg",
+                    details: "Imagen de referencia de guantes con protección. Confirma talla y características con el proveedor."
+                },
+                {
+                    name: "Equipo de protección",
+                    reference: "ACC-EQP-03",
+                    image: "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f0/MotoEqipments_HelmetBootsJacketAndGloves.jpg/500px-MotoEqipments_HelmetBootsJacketAndGloves.jpg",
+                    imageCredit: "https://commons.wikimedia.org/wiki/File:MotoEqipments_HelmetBootsJacketAndGloves.jpg",
+                    details: "Conjunto de equipo mostrado como referencia visual. Consulta disponibilidad de cada elemento por separado."
+                }
+            ]
+        },
+        maleteros: {
+            title: "Catálogo de maleteros y equipaje",
+            description: "Baúles y maletas de referencia. Verifica capacidad, soportes y compatibilidad con tu motocicleta.",
+            products: [
+                {
+                    name: "Juego de maletas laterales",
+                    reference: "MAL-LAT-01",
+                    image: "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d1/Kofferset02.JPG/500px-Kofferset02.JPG",
+                    imageCredit: "https://commons.wikimedia.org/wiki/File:Kofferset02.JPG",
+                    details: "Juego de equipaje lateral de referencia. Requiere verificar el sistema de anclaje compatible."
+                },
+                {
+                    name: "Baúl trasero para scooter",
+                    reference: "MAL-TR-02",
+                    image: "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4e/Empty_nutshell_on_top_of_the_top-case_of_my_motorscooter%2C_just_after_a_squirrel_had_decided_to_use_it_as_a_safe_location_for_having_lunch.jpg/500px-Empty_nutshell_on_top_of_the_top-case_of_my_motorscooter%2C_just_after_a_squirrel_had_decided_to_use_it_as_a_safe_location_for_having_lunch.jpg",
+                    imageCredit: "https://commons.wikimedia.org/wiki/File:Empty_nutshell_on_top_of_the_top-case_of_my_motorscooter,_just_after_a_squirrel_had_decided_to_use_it_as_a_safe_location_for_having_lunch.jpg",
+                    details: "Imagen de referencia de un baúl trasero. Confirma capacidad y sistema de montaje antes de comprar."
+                },
+                {
+                    name: "Baúl de viaje",
+                    reference: "MAL-VIA-03",
+                    image: "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/74/SHAD_logo_on_top_case_2025JPG.jpg/500px-SHAD_logo_on_top_case_2025JPG.jpg",
+                    imageCredit: "https://commons.wikimedia.org/wiki/File:SHAD_logo_on_top_case_2025JPG.jpg",
+                    details: "Detalle de baúl para motocicleta usado como referencia visual. Marca y disponibilidad por confirmar."
+                }
+            ]
+        }
     };
 
     function showMotoDetails(motorcycle) {
@@ -331,38 +541,115 @@ document.addEventListener("DOMContentLoaded", () => {
         motoModal.style.display = "flex";
     }
 
-    function renderModels(brand) {
-        if (!modelsGrid) {
-            return;
-        }
+    function renderMotorcycleCatalog(entries, titleText, descriptionText, showBackButton, activeBrand = "") {
+        if (!modelsGrid) return;
 
-        const models = motorcycles[brand] || [];
         const title = document.getElementById("models-title");
         const description = document.getElementById("models-description");
 
-        if (title) title.textContent = `Motos ${brand}`;
-        if (description) description.textContent = `Modelos destacados de ${brand} disponibles para conocer y reservar.`;
+        if (title) title.textContent = titleText;
+        if (description) description.textContent = descriptionText;
+        if (btnCatalogoCompleto) btnCatalogoCompleto.hidden = showBackButton;
+        if (btnCatalogoInicio) btnCatalogoInicio.hidden = !showBackButton;
+        document.querySelectorAll(".brand-link").forEach(link => {
+            link.classList.toggle("active", !showBackButton && link.dataset.brand === activeBrand);
+        });
 
-        modelsGrid.innerHTML = models.map((motorcycle, index) => `
+        modelsGrid.innerHTML = entries.map(({ brand, motorcycle, index }) => `
             <article class="model-card">
-                <div class="model-image" style="background-image: url('${motorcycle.image}')"></div>
+                <img class="model-image" src="${motorcycle.image}" alt="${brand} ${motorcycle.name}, imagen de referencia" loading="lazy">
                 <div class="model-content">
-                    <span class="model-type">${motorcycle.type}</span>
+                    <span class="model-type">${brand} · ${motorcycle.type}</span>
                     <h4>${motorcycle.name}</h4>
                     <strong>${motorcycle.price}</strong>
-                    <button type="button" class="btn-ver-moto" data-brand="${brand}" data-index="${index}">Ver moto</button>
+                    <button type="button" class="btn-ver-moto-catalogo" data-brand="${brand}" data-index="${index}">Ver moto</button>
+                    ${motorcycle.imageCredit ? `<a class="image-credit" href="${motorcycle.imageCredit}" target="_blank" rel="noopener noreferrer">Crédito de imagen</a>` : ""}
                 </div>
             </article>
         `).join("");
 
-        document.querySelectorAll(".btn-ver-moto").forEach(button => {
-            button.addEventListener("click", (e) => {
-                const b = e.target.getAttribute("data-brand");
-                const idx = e.target.getAttribute("data-index");
-                const selectedMoto = motorcycles[b][idx];
-                showMotoDetails(selectedMoto);
+        modelsGrid.querySelectorAll(".btn-ver-moto-catalogo").forEach(button => {
+            button.addEventListener("click", () => {
+                const brand = button.dataset.brand;
+                const index = Number(button.dataset.index);
+                showMotoDetails(motorcycles[brand][index]);
             });
         });
+
+    }
+
+    function renderModels(brand) {
+        const models = motorcycles[brand] || [];
+        const entries = models.map((motorcycle, index) => ({ brand, motorcycle, index }));
+        renderMotorcycleCatalog(
+            entries,
+            `Motos ${brand}`,
+            `Modelos destacados de ${brand} disponibles para conocer y reservar.`,
+            false,
+            brand
+        );
+    }
+
+    function scrollToCatalog() {
+        const modelosSection = document.getElementById("modelos");
+        if (modelosSection) {
+            modelosSection.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+    }
+
+    function renderCompleteCatalog() {
+        const catalog = Object.entries(motorcycles).flatMap(([brand, models]) =>
+            models.map((motorcycle, index) => ({ brand, motorcycle, index }))
+        );
+        renderMotorcycleCatalog(
+            catalog,
+            "Catálogo completo de motocicletas",
+            `${catalog.length} modelos y referencias de todas nuestras marcas. Las imágenes son referenciales; consulta disponibilidad y ficha técnica.`,
+            true
+        );
+        scrollToCatalog();
+    }
+
+    function renderAccessoryCatalog(category) {
+        const catalog = accessoryCatalog[category];
+        if (!catalog || !modelsGrid) return;
+
+        if (btnCatalogoCompleto) btnCatalogoCompleto.hidden = true;
+        if (btnCatalogoInicio) btnCatalogoInicio.hidden = false;
+        document.querySelectorAll(".brand-link").forEach(link => link.classList.remove("active"));
+
+        const title = document.getElementById("models-title");
+        const description = document.getElementById("models-description");
+        if (title) title.textContent = catalog.title;
+        if (description) description.textContent = catalog.description;
+
+        modelsGrid.innerHTML = catalog.products.map(product => `
+            <article class="model-card product-card">
+                <img class="model-image" src="${product.image}" alt="${product.name}" loading="lazy">
+                <div class="model-content">
+                    <span class="model-type">${catalog.title}</span>
+                    <h4>${product.name}</h4>
+                    <p class="product-reference">Referencia: ${product.reference}</p>
+                    <strong>Consultar precio</strong>
+                    <button type="button" class="btn-ver-producto">Ver detalles</button>
+                    ${product.imageCredit ? `<a class="image-credit" href="${product.imageCredit}" target="_blank" rel="noopener noreferrer">Crédito de imagen</a>` : ""}
+                </div>
+            </article>
+        `).join("");
+
+        modelsGrid.querySelectorAll(".btn-ver-producto").forEach((button, index) => {
+            button.addEventListener("click", () => {
+                const product = catalog.products[index];
+                showAdvisoryInfo({
+                    title: product.name,
+                    type: catalog.title,
+                    price: `Referencia: ${product.reference}`,
+                    image: product.image,
+                    details: product.details
+                });
+            });
+        });
+        scrollToCatalog();
     }
 
     if (modelsGrid) {
@@ -398,6 +685,86 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         renderModels("TVS");
+    }
+
+    if (btnCatalogoCompleto) {
+        btnCatalogoCompleto.addEventListener("click", renderCompleteCatalog);
+    }
+
+    if (btnCatalogoInicio) {
+        btnCatalogoInicio.addEventListener("click", () => {
+            renderModels("TVS");
+            scrollToCatalog();
+        });
+    }
+
+    document.querySelectorAll(".accessory-item").forEach(button => {
+        button.addEventListener("click", () => {
+            renderAccessoryCatalog(button.dataset.accessory);
+        });
+    });
+
+    // --- FUNCIÓN GENÉRICA PARA FILTRAR POR CATEGORÍA ---
+    function filtrarPorCategoria(palabrasClave, tituloSeccion, descSeccion) {
+        if (!modelsGrid) return;
+
+        const motosFiltradas = [];
+        Object.keys(motorcycles).forEach(brandKey => {
+            motorcycles[brandKey].forEach((moto, index) => {
+                const tipo = (moto.type || "").toLowerCase();
+                const coincide = palabrasClave.some(palabra => tipo.includes(palabra));
+                if (coincide) {
+                    motosFiltradas.push({ brand: brandKey, motorcycle: moto, index });
+                }
+            });
+        });
+
+        renderMotorcycleCatalog(
+            motosFiltradas,
+            tituloSeccion,
+            descSeccion,
+            true
+        );
+        if (motosFiltradas.length === 0) {
+            modelsGrid.innerHTML = `<p class="empty-catalog">No hay modelos disponibles en esta categoría actualmente.</p>`;
+        }
+        scrollToCatalog();
+    }
+
+    // Eventos de los botones de categorías
+    if (btnVerTerreno) {
+        btnVerTerreno.addEventListener("click", (e) => {
+            e.preventDefault();
+            filtrarPorCategoria(["adventure", "supermoto", "todo terreno"], "Motos Todo Terreno", "Modelos de aventura y doble propósito. Las imágenes son de referencia; consulta disponibilidad y ficha técnica.");
+        });
+    }
+
+    if (btnVerAutomaticas) {
+        btnVerAutomaticas.addEventListener("click", (e) => {
+            e.preventDefault();
+            filtrarPorCategoria(["scooter"], "Motos Automáticas", "Scooters con transmisión automática. Las imágenes son de referencia; consulta disponibilidad y ficha técnica.");
+        });
+    }
+
+    if (btnVerSemi) {
+        btnVerSemi.addEventListener("click", (e) => {
+            e.preventDefault();
+            filtrarPorCategoria(["semiautomática"], "Motos Semiautomáticas", "Referencias visuales para esta categoría. Confirma con un asesor los modelos comerciales disponibles y sus especificaciones.");
+        });
+    }
+
+    if (btnVerDeportivas) {
+        btnVerDeportivas.addEventListener("click", (e) => {
+            e.preventDefault();
+            filtrarPorCategoria(["deportiva"], "Motos Deportivas", "Modelos de estilo deportivo. Las imágenes son de referencia; consulta disponibilidad y ficha técnica.");
+        });
+    }
+
+    if (btnVerAltagama) {
+        btnVerAltagama.addEventListener("click", (e) => {
+            e.preventDefault();
+            filtrarPorCategoria(["adventure", "touring"], "Motos de Alta Gama y Touring", "Tres referencias de aventura y turismo. Las imágenes son referenciales; consulta disponibilidad y ficha técnica.");
+        });
     }
 
     // Lógica para Login conectada al Backend
