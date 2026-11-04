@@ -4,6 +4,22 @@ document.addEventListener("DOMContentLoaded", () => {
     const errorMessage = document.getElementById("error-message");
     const modelsGrid = document.getElementById("models-grid");
     const btnLogout = document.getElementById("btn-logout");
+    // Verificar que exista una sesión activa
+if (window.location.pathname.endsWith("dashboard.html")) {
+    const usuario = sessionStorage.getItem("motoneaUser");
+
+    if (!usuario) {
+        window.location.href = "index.html";
+    }
+}
+ // Mostrar el nombre del usuario en el dashboard
+const userGreeting = document.getElementById("user-greeting");
+const usuarioSesion = sessionStorage.getItem("motoneaUser");
+
+if (userGreeting && usuarioSesion) {
+    const usuario = JSON.parse(usuarioSesion);
+    userGreeting.textContent = `Hola, ${usuario.name}`;
+}
     const btnVerCredito = document.getElementById("btn-ver-credito");
     const btnCatalogoCompleto = document.getElementById("btn-catalogo-completo");
     const btnCatalogoInicio = document.getElementById("btn-catalogo-inicio");
@@ -21,10 +37,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Lógica del botón Salir
     if (btnLogout) {
-        btnLogout.addEventListener("click", () => {
-            window.location.href = "index.html";
-        });
-    }
+    btnLogout.addEventListener("click", () => {
+        sessionStorage.removeItem("motoneaUser");
+        window.location.href = "index.html";
+    });
+}
 
     // Crear dinámicamente el modal general para detalles y asesorías
     if (!document.getElementById("moto-modal")) {
@@ -802,9 +819,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (!response.ok) {
                     throw new Error(data.error || "Credenciales inválidas");
                 }
+sessionStorage.setItem("motoneaUser", JSON.stringify(data.user));
 
-                alert("¡Inicio de sesión exitoso!");
-                window.location.href = "dashboard.html";
+alert("¡Inicio de sesión exitoso!");
+window.location.href = "dashboard.html";
             } catch (error) {
                 showError(error instanceof TypeError
                     ? "No se pudo conectar con el servidor. Inícialo desde la carpeta backend y abre http://localhost:3000."
@@ -844,6 +862,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     throw new Error(data.error || "Error en el registro");
                 }
 
+                sessionStorage.setItem("motoneaUser", JSON.stringify(data.user));
                 window.location.href = "dashboard.html";
             } catch (error) {
                 showError(error instanceof TypeError
